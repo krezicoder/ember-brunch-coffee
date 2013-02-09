@@ -1,1 +1,28 @@
-{{outlet}}
+<!--Nav bar-->
+<div class="navbar navbar-static-top">
+  <div class="navbar-inner">
+    <a class="brand" href="#">Title</a>
+    <ul class="nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Link</a></li>
+      <li><a href="#">Link</a></li>
+    </ul>
+  </div>
+</div>
+<!-- End of Nav bar-->
+<div class="container-fluid" style="margin-top:10px;">
+  <div class="row-fluid">
+    <div class="span2">
+      <!--Sidebar content-->
+      <div class="well">Side bar</div>
+    </div>
+    <div class="span10">
+		<!--Body Content -->
+		<div class=well>
+		{{outlet}}
+	</div>
+    </div>
+  </div>
+</div>
+
+
