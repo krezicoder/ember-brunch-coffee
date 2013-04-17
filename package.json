@@ -20,6 +20,8 @@
     "css-brunch": ">= 1.0 < 1.5",
     "uglify-js-brunch": ">= 1.0 < 1.5",
     "clean-css-brunch": ">= 1.0 < 1.5",
+    "sass-brunch": "> 1.0 ",
+    "auto-reload-brunch": ">= 1.0 < 1.6",
     "ember-handlebars-brunch": "git://github.com/icholy/ember-handlebars-brunch.git"
   },
   "devDependencies": {

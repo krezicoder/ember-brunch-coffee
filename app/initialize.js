@@ -7,4 +7,4 @@ require('routes');
 require('router');
 require('store');
 
-App.initialize();
+//App.initialize();
