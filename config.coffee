@@ -17,10 +17,10 @@ exports.config =
         before: [
           'vendor/scripts/console-helper.js',
           'vendor/scripts/jquery-1.9.0.min.js',
-          'vendor/scripts/handlebars.js',
-          'vendor/scripts/ember-1.0.0-rc.2.js',
+          'vendor/scripts/ember-latest.js',
           'vendor/scripts/ember-data.js',
-          'vendor/scripts/bootstrap.js'
+          'vendor/scripts/bootstrap.js',
+          'vendor/scripts/handlebars.js'
           ]
 
     stylesheets:
@@ -29,7 +29,7 @@ exports.config =
       order:
         before: ['vendor/styles/bootstrap.css',
                  'vendor/styles/bootstrap-responsive.css'
-		]
+        ]
 
     templates:
       precompile: true
