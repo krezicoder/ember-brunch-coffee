@@ -8,7 +8,7 @@ exports.config =
   files: 
     
     javascripts: 
-      defaultExtension: 'js',
+      defaultExtension: 'coffee',
       joinTo: 
         'javascripts/app.js': /^app/
         'javascripts/vendor.js': /^vendor/
@@ -27,7 +27,9 @@ exports.config =
       defaultExtension: 'css'
       joinTo: 'stylesheets/app.css'
       order:
-        before: ['vendor/styles/bootstrap.css']
+        before: ['vendor/styles/bootstrap.css',
+          'vendor/styles/bootstrap-responsive.css'
+        ]
 
     templates:
       precompile: true

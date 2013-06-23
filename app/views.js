@@ -1,6 +1,0 @@
-/////////////////////
-// Add all your views here
-////////////////////
-
-
-// require('views/index');
