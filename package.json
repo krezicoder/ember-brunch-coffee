@@ -9,13 +9,13 @@
     "url": ""
   },
   "engines": {
-    "node": "~0.6.10 || 0.8 || 0.9"
+    "node": "~0.6.10 || 0.8 || 0.9 || 0.10.2"
   },
   "scripts": {
     "start": "brunch watch --server"
   },
   "dependencies": {
-    "javascript-brunch": ">= 1.0 < 1.5",
+    "javascript-brunch": ">= 1.0 < 1.7",
     "coffee-script-brunch": ">= 1.0 < 1.5",
     "css-brunch": ">= 1.0 < 1.5",
     "uglify-js-brunch": ">= 1.0 < 1.5",

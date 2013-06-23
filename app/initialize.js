@@ -1,6 +1,6 @@
 window.App = require('app');
 
-require('templates');
+//require('templates');
 require('controllers');
 require('models');
 require('routes');

@@ -16,11 +16,11 @@ exports.config =
       order: 
         before: [
           'vendor/scripts/console-helper.js',
-          'vendor/scripts/jquery-1.9.0.min.js',
+          'vendor/scripts/jquery-latest.js',
+          'vendor/scripts/handlebars.js',
           'vendor/scripts/ember-latest.js',
           'vendor/scripts/ember-data.js',
-          'vendor/scripts/bootstrap.js',
-          'vendor/scripts/handlebars.js'
+          'vendor/scripts/bootstrap.js'
           ]
 
     stylesheets:
