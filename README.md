@@ -49,13 +49,14 @@ then visit `localhost:3333`
       initialize.coffee
     /vendor/
       scripts/
-        jquery-1.8.0.js
+        jquery-1.9.0.js
         console-helper.js
         ember-latest.js
         ember-data-latest.js
-        handlebars-1.0.0.beta.6.js
+        handlebars-latest.js
       styles/
         bootstrap.css
+        bootstrap-responsive.css
     /public/
       img/
       stylesheets/
@@ -77,4 +78,5 @@ The generated output is placed in the `public/` (by default) directory when `bru
 Software Versions used:
 
 * jQuery v1.9.0
-* Ember latest - 1.0.0-RC5
+* Ember latest - 1.0.0-RC6
+* Ember Data - v0.13-39-gca7ba71 (2013-06-20 16:45:54 -0700)
