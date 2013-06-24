@@ -76,5 +76,5 @@ The generated output is placed in the `public/` (by default) directory when `bru
 ## Other
 Software Versions used:
 
-* jQuery 1.8.0
-* Ember latest
+* jQuery v1.9.0
+* Ember latest - 1.0.0-RC5
