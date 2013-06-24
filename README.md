@@ -1,5 +1,5 @@
-# Brunch with Ember
-This is a simple ember skeleton for [Brunch](http://brunch.io/) with working and up to date **handlebars template pre-compilng** :)
+# Ember Brunch Coffee
+This is a simple ember skeleton for [Brunch](http://brunch.io/) with working and up to date **handlebars template pre-compilng** with coffescript support
 
 ## Getting started
 
