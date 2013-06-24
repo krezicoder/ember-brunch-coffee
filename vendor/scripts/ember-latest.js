@@ -1,5 +1,5 @@
-// Version: v1.0.0-rc.5-113-g720acd8
-// Last commit: 720acd8 (2013-06-22 09:19:49 -0700)
+// Version: v1.0.0-rc.6-1-g42f0c68
+// Last commit: 42f0c68 (2013-06-23 15:43:35 -0400)
 
 
 (function() {
@@ -156,8 +156,8 @@ Ember.deprecateFunc = function(message, func) {
 
 })();
 
-// Version: v1.0.0-rc.5-113-g720acd8
-// Last commit: 720acd8 (2013-06-22 09:19:49 -0700)
+// Version: v1.0.0-rc.6-1-g42f0c68
+// Last commit: 42f0c68 (2013-06-23 15:43:35 -0400)
 
 
 (function() {
@@ -224,7 +224,7 @@ var define, requireModule;
 
   @class Ember
   @static
-  @version 1.0.0-rc.5
+  @version 1.0.0-rc.6
 */
 
 if ('undefined' === typeof Ember) {
@@ -251,10 +251,10 @@ Ember.toString = function() { return "Ember"; };
 /**
   @property VERSION
   @type String
-  @default '1.0.0-rc.5'
+  @default '1.0.0-rc.6'
   @final
 */
-Ember.VERSION = '1.0.0-rc.5';
+Ember.VERSION = '1.0.0-rc.6';
 
 /**
   Standard environmental variables. You can define these in a global `ENV`
@@ -25816,7 +25816,7 @@ Ember.Route = Ember.Object.extend({
   /**
     @private
 
-    This hook is the entry point for router.coffee
+    This hook is the entry point for router.js
 
     @method setup
   */
@@ -25971,7 +25971,7 @@ Ember.Route = Ember.Object.extend({
   /**
     @private
 
-    Called when the context is changed by router.coffee.
+    Called when the context is changed by router.js.
 
     @method contextDidChange
   */
