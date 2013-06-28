@@ -37,8 +37,6 @@ exports.config =
       defaultExtension: 'hbs'
       joinTo: 'javascripts/app.js' : /^app/
 
-  modules:
-    addSourceURLs: true
 
   # allow _ prefixed templates so partials work
   conventions:
