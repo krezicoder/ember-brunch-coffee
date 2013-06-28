@@ -1,5 +1,5 @@
-// Version: v0.13-39-gca7ba71
-// Last commit: ca7ba71 (2013-06-20 16:45:54 -0700)
+// Version: v0.13-50-g83f9f6b
+// Last commit: 83f9f6b (2013-06-25 10:35:47 -0700)
 
 
 (function() {
@@ -54,7 +54,9 @@ var define, requireModule;
   @static
 */
 
-window.DS = Ember.Namespace.create();
+window.DS = Ember.Namespace.create({
+  VERSION: '0.13'
+});
 
 })();
 
@@ -372,6 +374,7 @@ DS.AdapterPopulatedRecordArray = DS.RecordArray.extend({
 */
 
 var get = Ember.get, set = Ember.set;
+var map = Ember.EnumerableUtils.map;
 
 /**
   A ManyArray is a RecordArray that represents the contents of a has-many
@@ -459,7 +462,7 @@ DS.ManyArray = DS.RecordArray.extend({
   // Overrides Ember.Array's replace method to implement
   replaceContent: function(index, removed, added) {
     // Map the array of record objects into an array of  client ids.
-    added = added.map(function(record) {
+    added = map(added, function(record) {
       Ember.assert("You can only add records of " + (get(this, 'type') && get(this, 'type').toString()) + " to this relationship.", !get(this, 'type') || (get(this, 'type').detectInstance(record)) );
       return get(record, '_reference');
     }, this);
@@ -724,7 +727,7 @@ DS.Transaction = Ember.Object.extend({
         records = get(this, 'records'),
         store = get(this, 'store');
 
-    records.forEach(function(record) {
+    forEach(records, function(record) {
       var reference = get(record, '_reference');
       var changes = store.relationshipChangesFor(reference);
       for(var i = 0; i < changes.length; i++) {
@@ -749,7 +752,7 @@ DS.Transaction = Ember.Object.extend({
     var records = get(this, 'records'),
         store = get(this, 'store');
 
-    records.forEach(function(record) {
+    forEach(records, function(record) {
       if(!get(record, 'isDirty')) return;
       record.send('willCommit');
       var adapter = store.adapterForType(record.constructor);
@@ -780,7 +783,7 @@ DS.Transaction = Ember.Object.extend({
     var commitDetails = get(this, 'commitDetails'),
         relationships = get(this, 'relationships');
 
-    commitDetails.forEach(function(adapter, commitDetails) {
+    forEach(commitDetails, function(adapter, commitDetails) {
       Ember.assert("You tried to commit records but you have no adapter", adapter);
       Ember.assert("You tried to commit records but your adapter does not implement `commit`", adapter.commit);
 
@@ -820,7 +823,7 @@ DS.Transaction = Ember.Object.extend({
     });
 
     var records = get(this, 'records');
-    records.forEach(function(record) {
+    forEach(records, function(record) {
       if (!record.get('isDirty')) return;
       record.send('rollback');
     });
@@ -865,11 +868,11 @@ DS.Transaction = Ember.Object.extend({
   */
   removeCleanRecords: function() {
     var records = get(this, 'records');
-    records.forEach(function(record) {
+    forEach(records, function(record) {
       if(!record.get('isDirty')) {
         this.remove(record);
       }
-    }, this); 
+    }, this);
   },
 
   /**
@@ -1105,6 +1108,7 @@ var get = Ember.get, set = Ember.set;
 var once = Ember.run.once;
 var isNone = Ember.isNone;
 var forEach = Ember.EnumerableUtils.forEach;
+var indexOf = Ember.EnumerableUtils.indexOf;
 var map = Ember.EnumerableUtils.map;
 
 // These values are used in the data cache when clientIds are
@@ -2102,7 +2106,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
   */
   didSaveRecords: function(list, dataList) {
     var i = 0;
-    list.forEach(function(record) {
+    forEach(list, function(record) {
       this.didSaveRecord(record, dataList && dataList[i++]);
     }, this);
   },
@@ -2535,7 +2539,7 @@ DS.Store = Ember.Object.extend(DS._Mappable, {
 
     if (id) { delete typeMap.idToReference[id]; }
 
-    var loc = typeMap.references.indexOf(reference);
+    var loc = indexOf(typeMap.references, reference);
     typeMap.references.splice(loc, 1);
   },
 
@@ -2886,7 +2890,11 @@ var stateProperty = Ember.computed(function(key) {
 }).property();
 
 var hasDefinedProperties = function(object) {
-  for (var name in object) {
+  // Ignore internal property defined by simulated `Ember.create`.
+  var names = Ember.keys(object);
+  var i, l, name;
+  for (i = 0, l = names.length; i < l; i++ ) {
+    name = names[i];
     if (object.hasOwnProperty(name) && object[name]) { return true; }
   }
 
@@ -4634,9 +4642,9 @@ DS.RelationshipChangeRemove.prototype.sync = function() {
       secondRecord.suspendRelationshipObservers(function(){
         set(secondRecord, secondRecordName, null);
       });
-     }
-     else if(this.secondRecordKind === "hasMany"){
-       secondRecord.suspendRelationshipObservers(function(){
+    }
+    else if(this.secondRecordKind === "hasMany"){
+      secondRecord.suspendRelationshipObservers(function(){
         get(secondRecord, secondRecordName).removeObject(firstRecord);
       });
     }
@@ -5365,7 +5373,7 @@ DS.RecordArrayManager = Ember.Object.extend({
     var reference = get(record, '_reference');
     var recordArrays = reference.recordArrays || [];
 
-    recordArrays.forEach(function(array) {
+    forEach(recordArrays, function(array) {
       array.removeReference(reference);
     });
   },
@@ -5423,7 +5431,7 @@ DS.RecordArrayManager = Ember.Object.extend({
       store: this.store
     });
 
-    references.forEach(function(reference) {
+    forEach(references, function(reference) {
       var arrays = this.recordArraysForReference(reference);
       arrays.add(manyArray);
     }, this);
@@ -7304,6 +7312,7 @@ DS.JSONSerializer = DS.Serializer.extend({
 */
 
 var get = Ember.get, set = Ember.set, merge = Ember.merge;
+var forEach = Ember.EnumerableUtils.forEach;
 
 function loaderFor(store) {
   return {
@@ -7944,7 +7953,7 @@ DS.Adapter = Ember.Object.extend(DS._Mappable, {
       defaultValue: function() { return Ember.OrderedSet.create(); }
     });
 
-    enumerable.forEach(function(item) {
+    forEach(enumerable, function(item) {
       map.get(item.constructor).add(item);
     });
 
@@ -8185,6 +8194,7 @@ DS.FixtureSerializer = DS.Serializer.extend({
 */
 
 var get = Ember.get, fmt = Ember.String.fmt,
+    indexOf = Ember.EnumerableUtils.indexOf,
     dump = Ember.get(window, 'JSON.stringify') || function(object) { return object.toString(); };
 
 /**
@@ -8284,7 +8294,7 @@ DS.FixtureAdapter = DS.Adapter.extend({
 
     if (fixtures) {
       fixtures = fixtures.filter(function(item) {
-        return ids.indexOf(item.id) !== -1;
+        return indexOf(ids, item.id) !== -1;
       });
     }
 
@@ -8356,7 +8366,7 @@ DS.FixtureAdapter = DS.Adapter.extend({
     var existingFixture = this.findExistingFixture(type, record);
 
     if(existingFixture) {
-      var index = type.FIXTURES.indexOf(existingFixture);
+      var index = indexOf(type.FIXTURES, existingFixture);
       type.FIXTURES.splice(index, 1);
       return true;
     }

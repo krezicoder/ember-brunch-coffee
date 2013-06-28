@@ -1,5 +1,5 @@
-// Version: v1.0.0-rc.6-1-g42f0c68
-// Last commit: 42f0c68 (2013-06-23 15:43:35 -0400)
+// Version: v1.0.0-rc.6-27-g230a530
+// Last commit: 230a530 (2013-06-27 06:37:13 -0700)
 
 
 (function() {
@@ -156,8 +156,8 @@ Ember.deprecateFunc = function(message, func) {
 
 })();
 
-// Version: v1.0.0-rc.6-1-g42f0c68
-// Last commit: 42f0c68 (2013-06-23 15:43:35 -0400)
+// Version: v1.0.0-rc.6-27-g230a530
+// Last commit: 230a530 (2013-06-27 06:37:13 -0700)
 
 
 (function() {
@@ -1198,9 +1198,9 @@ var needsFinallyFix = (function() {
   @for Ember
   @param {Function} tryable The function to run the try callback
   @param {Function} finalizer The function to run the finally callback
-  @param [binding]
+  @param {Object} [binding] The optional calling object. Defaults to 'this'
   @return {*} The return value is the that of the finalizer,
-  unless that valueis undefined, in which case it is the return value
+  unless that value is undefined, in which case it is the return value
   of the tryable
 */
 
@@ -1249,7 +1249,7 @@ if (needsFinallyFix) {
   @param {Function} tryable The function to run the try callback
   @param {Function} catchable The function to run the catchable callback
   @param {Function} finalizer The function to run the finally callback
-  @param [binding]
+  @param {Object} [binding] The optional calling object. Defaults to 'this'
   @return {*} The return value is the that of the finalizer,
   unless that value is undefined, in which case it is the return value
   of the tryable.
@@ -11126,7 +11126,7 @@ Ember.Evented = Ember.Mixin.create({
   },
 
   /**
-    Cancels subscription for give name, target, and method.
+    Cancels subscription for given name, target, and method.
 
     @method off
     @param {String} name The name of the event
@@ -18620,9 +18620,9 @@ Ember.CollectionView.CONTAINER_MAP = {
 
   The easiest way to create an `Ember.Component` is via
   a template. If you name a template
-  `controls/my-foo`, you will be able to use
+  `components/my-foo`, you will be able to use
   `{{my-foo}}` in other templates, which will make
-  an instance of the isolated control.
+  an instance of the isolated component.
 
   ```html
   {{app-profile person=currentUser}}
@@ -18639,25 +18639,24 @@ Ember.CollectionView.CONTAINER_MAP = {
   include the **contents** of the custom tag:
 
   ```html
-  {{#my-profile person=currentUser}}
-  <p>Admin mode</p>
-  {{/my-profile}}
+  {{#app-profile person=currentUser}}
+    <p>Admin mode</p>
+  {{/app-profile}}
   ```
 
   ```html
   <!-- app-profile template -->
-
   <h1>{{person.title}}</h1>
   {{yield}} <!-- block contents -->
   ```
 
-  If you want to customize the control, in order to
+  If you want to customize the component, in order to
   handle events or actions, you implement a subclass
   of `Ember.Component` named after the name of the
-  control.
+  component.
 
   For example, you could implement the action
-  `hello` for the `app-profile` control:
+  `hello` for the `app-profile` component:
 
   ```js
   App.AppProfileComponent = Ember.Component.extend({
@@ -18667,7 +18666,7 @@ Ember.CollectionView.CONTAINER_MAP = {
   });
   ```
 
-  And then use it in the control's template:
+  And then use it in the component's template:
 
   ```html
   <!-- app-profile template -->
@@ -19262,8 +19261,8 @@ if(!Handlebars && typeof require === 'function') {
   Handlebars = require('handlebars');
 }
 
-Ember.assert("Ember Handlebars requires Handlebars version 1.0.0-rc.4. Include a SCRIPT tag in the HTML HEAD linking to the Handlebars file before you link to Ember.", Handlebars)
-Ember.assert("Ember Handlebars requires Handlebars version 1.0.0-rc.4, COMPILER_REVISION expected: 3, got: " +  Handlebars.COMPILER_REVISION + " – Please note: Builds of master may have other COMPILER_REVISION values.", Handlebars.COMPILER_REVISION === 3);
+Ember.assert("Ember Handlebars requires Handlebars version 1.0.0. Include a SCRIPT tag in the HTML HEAD linking to the Handlebars file before you link to Ember.", Handlebars)
+Ember.assert("Ember Handlebars requires Handlebars version 1.0.0, COMPILER_REVISION expected: 4, got: " +  Handlebars.COMPILER_REVISION + " – Please note: Builds of master may have other COMPILER_REVISION values.", Handlebars.COMPILER_REVISION === 4);
 
 /**
   Prepares the Handlebars templating library for use inside Ember's view
@@ -19450,7 +19449,7 @@ Ember.Handlebars.Compiler.prototype.mustache = function(mustache) {
   } else if (mustache.params.length || mustache.hash) {
     // no changes required
   } else {
-    var id = new Handlebars.AST.IdNode(['_triageMustache']);
+    var id = new Handlebars.AST.IdNode([{ part: '_triageMustache' }]);
 
     // Update the mustache node to include a hash value indicating whether the original node
     // was escaped. This will allow us to properly escape values when the underlying value
@@ -22787,6 +22786,7 @@ var set = Ember.set,
     get = Ember.get,
     indexOf = Ember.EnumerableUtils.indexOf,
     indexesOf = Ember.EnumerableUtils.indexesOf,
+    forEach = Ember.EnumerableUtils.forEach,
     replace = Ember.EnumerableUtils.replace,
     isArray = Ember.isArray,
     precompileTemplate = Ember.Handlebars.compile;
@@ -22838,6 +22838,18 @@ Ember.SelectOption = Ember.View.extend({
       return get(this, valuePath);
     }).property(valuePath));
   }, 'parentView.optionValuePath')
+});
+
+Ember.SelectOptgroup = Ember.CollectionView.extend({
+  tagName: 'optgroup',
+  attributeBindings: ['label'],
+
+  selectionBinding: 'parentView.selection',
+  multipleBinding: 'parentView.multiple',
+  optionLabelPathBinding: 'parentView.optionLabelPath',
+  optionValuePathBinding: 'parentView.optionValuePath',
+
+  itemViewClassBinding: 'parentView.optionView'
 });
 
 /**
@@ -23090,8 +23102,8 @@ Ember.Select = Ember.View.extend(
   tagName: 'select',
   classNames: ['ember-select'],
   defaultTemplate: Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [3,'>= 1.0.0-rc.4'];
-helpers = helpers || Ember.Handlebars.helpers; data = data || {};
+this.compilerInfo = [4,'>= 1.0.0'];
+helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1, hashTypes, hashContexts, escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -23107,6 +23119,35 @@ function program1(depth0,data) {
 
 function program3(depth0,data) {
   
+  var stack1, hashTypes, hashContexts;
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers.each.call(depth0, "view.groupedContent", {hash:{},inverse:self.noop,fn:self.program(4, program4, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  else { data.buffer.push(''); }
+  }
+function program4(depth0,data) {
+  
+  var hashContexts, hashTypes;
+  hashContexts = {'contentBinding': depth0,'labelBinding': depth0};
+  hashTypes = {'contentBinding': "ID",'labelBinding': "ID"};
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "view.groupView", {hash:{
+    'contentBinding': ("content"),
+    'labelBinding': ("label")
+  },contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data})));
+  }
+
+function program6(depth0,data) {
+  
+  var stack1, hashTypes, hashContexts;
+  hashTypes = {};
+  hashContexts = {};
+  stack1 = helpers.each.call(depth0, "view.content", {hash:{},inverse:self.noop,fn:self.program(7, program7, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  else { data.buffer.push(''); }
+  }
+function program7(depth0,data) {
+  
   var hashContexts, hashTypes;
   hashContexts = {'contentBinding': depth0};
   hashTypes = {'contentBinding': "STRING"};
@@ -23121,7 +23162,7 @@ function program3(depth0,data) {
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   hashTypes = {};
   hashContexts = {};
-  stack1 = helpers.each.call(depth0, "view.content", {hash:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
+  stack1 = helpers['if'].call(depth0, "view.optionGroupPath", {hash:{},inverse:self.program(6, program6, data),fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],hashContexts:hashContexts,hashTypes:hashTypes,data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   return buffer;
   
@@ -23220,6 +23261,45 @@ function program3(depth0,data) {
     @default 'content'
   */
   optionValuePath: 'content',
+
+  /**
+    The path of the option group.
+    When this property is used, `content` should be sorted by `optionGroupPath`.
+
+    @property optionGroupPath
+    @type String
+    @default null
+  */
+  optionGroupPath: null,
+
+  /**
+    The view class for optgroup.
+
+    @property groupView
+    @type Ember.View
+    @default Ember.SelectOptgroup
+  */
+  groupView: Ember.SelectOptgroup,
+
+  groupedContent: Ember.computed(function() {
+    var groupPath = get(this, 'optionGroupPath');
+    var groupedContent = Ember.A([]);
+
+    forEach(get(this, 'content'), function(item) {
+      var label = get(item, groupPath);
+
+      if (get(groupedContent, 'lastObject.label') !== label) {
+        groupedContent.pushObject({
+          label: label,
+          content: Ember.A([])
+        });
+      }
+
+      get(groupedContent, 'lastObject.content').push(item);
+    });
+
+    return groupedContent;
+  }).property('optionGroupPath', 'content.@each'),
 
   /**
     The view class for option.
@@ -24401,15 +24481,16 @@ define("router",
      */
     function getMatchPoint(router, handlers, objects, inputParams) {
 
-      var objectsToMatch = objects.length, 
-          matchPoint = handlers.length, 
+      var matchPoint = handlers.length, 
           providedModels = {}, i,
           currentHandlerInfos = router.currentHandlerInfos || [],
           params = {},
           oldParams = router.currentParams || {},
           activeTransition = router.activeTransition,
-          handlerParams = {};
+          handlerParams = {},
+          obj;
 
+      objects = slice.call(objects);
       merge(params, inputParams);
    
       for (i = handlers.length - 1; i >= 0; i--) {
@@ -24424,9 +24505,9 @@ define("router",
         if (handlerObj.isDynamic) {
           // URL transition.
 
-          if (objectsToMatch > 0) {
+          if (obj = getMatchPointObject(objects, handlerName, activeTransition, true)) {
             hasChanged = true;
-            providedModels[handlerName] = objects[--objectsToMatch];
+            providedModels[handlerName] = obj;
           } else {
             handlerParams[handlerName] = {};
             for (var prop in handlerObj.params) {
@@ -24436,24 +24517,18 @@ define("router",
               handlerParams[handlerName][prop] = params[prop] = newParam;
             }
           }
-        } else if (handlerObj.hasOwnProperty('names') && handlerObj.names.length) {
+        } else if (handlerObj.hasOwnProperty('names')) {
           // Named transition.
 
-          if (objectsToMatch > 0) {
+          if (obj = getMatchPointObject(objects, handlerName, activeTransition, handlerObj.names.length)) {
             hasChanged = true;
-            providedModels[handlerName] = objects[--objectsToMatch];
-          } else if (activeTransition && activeTransition.providedModels[handlerName]) {
-
-            // Use model from previous transition attempt, preferably the resolved one.
-            hasChanged = true;
-            providedModels[handlerName] = activeTransition.providedModels[handlerName] ||
-                                          activeTransition.resolvedModels[handlerName];
+            providedModels[handlerName] = obj;
           } else {
             var names = handlerObj.names;
             handlerParams[handlerName] = {};
             for (var j = 0, len = names.length; j < len; ++j) {
               var name = names[j];
-              handlerParams[handlerName][name] = params[name] = oldParams[name];
+              handlerParams[handlerName][name] = params[name] = oldParams[name] || params[name];
             }
           }
         } 
@@ -24461,11 +24536,21 @@ define("router",
         if (hasChanged) { matchPoint = i; }
       }
 
-      if (objectsToMatch > 0) {
+      if (objects.length > 0) {
         throw "More context objects were passed than there are dynamic segments for the route: " + handlers[handlers.length - 1].handler;
       }
 
       return { matchPoint: matchPoint, providedModels: providedModels, params: params, handlerParams: handlerParams };
+    }
+
+    function getMatchPointObject(objects, handlerName, activeTransition, canUseProvidedObject) {
+      if (objects.length && canUseProvidedObject) {
+        return objects.pop();
+      } else if (activeTransition) {
+        // Use model from previous transition attempt, preferably the resolved one.
+        return (canUseProvidedObject && activeTransition.providedModels[handlerName]) ||
+               activeTransition.resolvedModels[handlerName];
+      } 
     }
 
     /**
@@ -24940,15 +25025,14 @@ define("router",
           handler = handlerInfo.handler,
           handlerName = handlerInfo.name,
           seq = transition.sequence,
-          errorAlreadyHandled = false,
-          resolvedModel;
+          errorAlreadyHandled = false;
 
       if (index < matchPoint) {
         log(router, seq, handlerName + ": using context from already-active handler");
 
         // We're before the match point, so don't run any hooks,
         // just use the already resolved context from the handler.
-        resolvedModel = handlerInfo.handler.context;
+        transition.resolvedModels[handlerInfo.name] = handlerInfo.handler.context;
         return proceed();
       }
 
@@ -24988,8 +25072,8 @@ define("router",
         trigger(handlerInfos.slice(0, index + 1), true, ['error', reason, transition]);
 
         if (handler.error) { 
-          handler.error(reason, transition); }
-
+          handler.error(reason, transition); 
+        }
 
         // Propagate the original error.
         return RSVP.reject(reason);
@@ -25016,14 +25100,14 @@ define("router",
         // want to use the value returned from `afterModel` in any way, but rather
         // always resolve with the original `context` object.
 
-        resolvedModel = context;
-        return handler.afterModel && handler.afterModel(resolvedModel, transition);
+        transition.resolvedModels[handlerInfo.name] = context;
+        return handler.afterModel && handler.afterModel(context, transition);
       }
 
       function proceed() {
         log(router, seq, handlerName + ": validation succeeded, proceeding");
 
-        handlerInfo.context = transition.resolvedModels[handlerInfo.name] = resolvedModel;
+        handlerInfo.context = transition.resolvedModels[handlerInfo.name];
         return validateEntry(transition, handlerInfos, index + 1, matchPoint, handlerParams);
       }
     }
@@ -25055,7 +25139,7 @@ define("router",
         return handler.context;
       }
 
-      if (handlerInfo.isDynamic && transition.providedModels.hasOwnProperty(handlerName)) {
+      if (transition.providedModels.hasOwnProperty(handlerName)) {
         var providedModel = transition.providedModels[handlerName];
         return typeof providedModel === 'function' ? providedModel() : providedModel;
       }
@@ -25582,7 +25666,11 @@ function transitionCompleted(router) {
 
 Ember.Router.reopenClass({
   map: function(callback) {
-    var router = this.router = new Router();
+    var router = this.router;
+    if (!router){
+      router = this.router = new Router();
+      router.callbacks = [];
+    }
 
     if (get(this, 'namespace.LOG_TRANSITIONS_INTERNAL')) {
       router.log = Ember.Logger.debug;
@@ -25590,10 +25678,14 @@ Ember.Router.reopenClass({
 
     var dsl = Ember.RouterDSL.map(function() {
       this.resource('application', { path: "/" }, function() {
+        for (var i=0; i < router.callbacks.length; i++){
+          router.callbacks[i].call(this);
+        }
         callback.call(this);
       });
     });
 
+    router.callbacks.push(callback);
     router.map(dsl.generate());
     return router;
   }
@@ -25927,6 +26019,7 @@ Ember.Route = Ember.Object.extend({
     });
     ```
 
+    @method beforeModel
     @param {Transition} transition 
     @return {Promise} if the value returned from this hook is
       a promise, the transition will pause until the transition
@@ -25957,6 +26050,7 @@ Ember.Route = Ember.Object.extend({
     of transition-pausing semantics when a promise is returned
     from this hook. 
 
+    @method afterModel
     @param {Transition} transition 
     @return {Promise} if the value returned from this hook is
       a promise, the transition will pause until the transition
@@ -26685,7 +26779,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     element:
 
     ```handlebars
-    {{#linkTo photoGallery}}
+    {{#linkTo 'photoGallery'}}
       Great Hamster Photos
     {{/linkTo}}
     ```
@@ -26702,7 +26796,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     a `tagName` option:
 
     ```handlebars
-    {{#linkTo photoGallery tagName="li"}}
+    {{#linkTo 'photoGallery' tagName="li"}}
       Great Hamster Photos
     {{/linkTo}}
     ```
@@ -26731,7 +26825,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     use of `{{linkTo}}`:
 
     ```handlebars
-    {{#linkTo photoGallery.recent}}
+    {{#linkTo 'photoGallery.recent'}}
       Great Hamster Photos from the last week
     {{/linkTo}}
     ```
@@ -26749,7 +26843,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     option:
 
     ```handlebars
-    {{#linkTo photoGallery.recent activeClass="current-url"}}
+    {{#linkTo 'photoGallery.recent' activeClass="current-url"}}
       Great Hamster Photos from the last week
     {{/linkTo}}
     ```
@@ -26775,7 +26869,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     ```
 
     ```handlebars
-    {{#linkTo photoGallery aPhoto}}
+    {{#linkTo 'photoGallery' aPhoto}}
       {{aPhoto.title}}
     {{/linkTo}}
     ```
@@ -26803,7 +26897,7 @@ Ember.onLoad('Ember.Handlebars', function(Handlebars) {
     This argument will become the model context of the linked route:
 
     ```handlebars
-    {{#linkTo photoGallery.comment aPhoto comment}}
+    {{#linkTo 'photoGallery.comment' aPhoto comment}}
       {{comment.body}}
     {{/linkTo}}
     ```
@@ -27833,7 +27927,7 @@ Ember.HashLocation = Ember.Object.extend({
   willDestroy: function() {
     var guid = Ember.guidFor(this);
 
-    Ember.$(window).unbind('hashchange.ember-location-'+guid);
+    Ember.$(window).off('hashchange.ember-location-'+guid);
   }
 });
 
@@ -28020,7 +28114,7 @@ Ember.HistoryLocation = Ember.Object.extend({
   willDestroy: function() {
     var guid = Ember.guidFor(this);
 
-    Ember.$(window).unbind('popstate.ember-location-'+guid);
+    Ember.$(window).off('popstate.ember-location-'+guid);
   }
 });
 
@@ -30813,6 +30907,11 @@ Test.QUnitAdapter = Test.Adapter.extend({
 
 
 (function() {
+/**
+* @module ember
+* @sub-module ember-testing
+*/
+
 var get = Ember.get,
     Test = Ember.Test,
     helper = Test.registerHelper,
@@ -30941,11 +31040,94 @@ function chain(app, promise, fn) {
   };
 }
 
-// expose these methods as test helpers
+/**
+* Loads a route, sets up any controllers, and renders any templates associated
+* with the route as though a real user had triggered the route change while
+* using your app.
+*
+* Example:
+* 
+* ```
+* visit('posts/index').then(function(){
+*   // assert something
+* });
+* ```
+*
+* @method visit
+* @param {String} url the name of the route 
+* @returns {RSVP.Promise}
+*/
 helper('visit', visit);
+
+/**
+* Clicks an element and triggers any actions triggered by the element's `click`
+* event.
+*
+* Example:
+*
+* ```
+* click('.some-jQuery-selector').then(function(){
+*  // assert something
+* });
+* ```
+*
+* @method click
+* @param {String} selcetor jQuery selector for finding element on the DOM
+* @returns {RSVP.Promise}
+*/
 helper('click', click);
+
+/**
+* Fills in an input element with some text.
+*
+* Example:
+*
+* ```
+* fillIn('#email', 'you@example.com').then(function(){
+*   // assert something
+* });
+* ```
+*
+* @method fillIn
+* @param {String} selector jQuery selector finding an input element on the DOM
+* to fill text with
+* @param {String} text text to place inside the input element
+* @returns {RSVP.Promise}
+*/
 helper('fillIn', fillIn);
+
+/**
+* Finds an element in the context of the app's container element. A simple alias
+* for `app.$(selector)`.
+*
+* Example:
+*
+* ```
+* var $el = find('.my-selector);
+* ```
+*
+* @method find
+* @param {String} selector jQuery string selector for element lookup
+* @returns {Object} jQuery object representing the results of the query
+*/
 helper('find', find);
+
+/**
+*
+* Like `find`, but throws an error if the element selector returns no results
+*
+* Example:
+*
+* ```
+* var $el = findWithAssert('.doesnt-exist'); // throws error
+* ```
+*
+* @method findWithAssert
+* @param {String} selector jQuery selector string for finding an element within
+* the DOM
+* @return {Object} jQuery object representing the results of the query
+* @throws {Error} throws error if jQuery object returned has a length of 0
+*/
 helper('findWithAssert', findWithAssert);
 helper('wait', wait);
 
