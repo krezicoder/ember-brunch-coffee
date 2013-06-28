@@ -1,5 +1,6 @@
 # Ember Brunch Coffee
 This is a simple ember skeleton for [Brunch](http://brunch.io/) with working and up to date **handlebars template pre-compilng** with coffescript support
+Ember Updated to Rc-6 with handlebars updated to Rc4
 
 ## Getting started
 
