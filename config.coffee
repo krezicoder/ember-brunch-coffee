@@ -20,15 +20,34 @@ exports.config =
           'vendor/scripts/handlebars.js',
           'vendor/scripts/ember-latest.js',
           'vendor/scripts/ember-data-latest.js',
-          'vendor/scripts/bootstrap.js'
+          'vendor/scripts/foundation/foundation.js'
+          'vendor/scripts/foundation/foundation.abide.js'
+          'vendor/scripts/foundation/foundation.accordion.js'
+          'vendor/scripts/foundation/foundation.alert.js'
+          'vendor/scripts/foundation/foundation.clearing.js'
+          'vendor/scripts/foundation/foundation.dropdown.js'
+          'vendor/scripts/foundation/foundation.equalizer.js'
+          'vendor/scripts/foundation/foundation.interchange.js'
+          'vendor/scripts/foundation/foundation.joyride.js'
+          'vendor/scripts/foundation/foundation.magellan.js'
+          'vendor/scripts/foundation/foundation.offcanvas.js'
+          'vendor/scripts/foundation/foundation.orbit.js'
+          'vendor/scripts/foundation/foundation.reveal.js'
+          'vendor/scripts/foundation/foundation.tab.js'
+          'vendor/scripts/foundation/foundation.tooltip.js'
+          'vendor/scripts/foundation/foundation.topbar.js'
+          'vendor/scripts/foundation/vendor/fastclick.js'
+          'vendor/scripts/foundation/vendor/jquery.cookie.js'
+          'vendor/scripts/foundation/vendor/modernizr.js'
+          'vendor/scripts/foundation/vendor/placeholder.js'
           ]
 
     stylesheets:
       defaultExtension: 'css'
       joinTo: 'stylesheets/app.css'
       order:
-        before: ['vendor/styles/bootstrap.css',
-          'vendor/styles/bootstrap-responsive.css'
+        before: ['vendor/styles/css/foundation.css',
+          'vendor/styles/css/normalize.css'
         ]
 
     templates:
