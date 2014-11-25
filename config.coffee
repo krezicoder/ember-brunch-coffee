@@ -16,10 +16,10 @@ exports.config =
       order: 
         before: [
           'vendor/scripts/console-helper.js',
-          'vendor/scripts/jquery-1.9.0.min.js',
-          'vendor/scripts/handlebars.js',
-          'vendor/scripts/ember-latest.js',
-          'vendor/scripts/ember-data-latest.js',
+          'vendor/scripts/jquery-2.1.1.min.js',
+          'vendor/scripts/ember/handlebars.js',
+          'vendor/scripts/ember/ember.js',
+          'vendor/scripts/ember-data/ember-data.js',
           'vendor/scripts/foundation/foundation.js'
           'vendor/scripts/foundation/foundation.abide.js'
           'vendor/scripts/foundation/foundation.accordion.js'

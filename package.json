@@ -22,7 +22,7 @@
     "clean-css-brunch": ">= 1.0 < 1.5",
     "sass-brunch": "> 1.0 ",
     "auto-reload-brunch": ">= 1.0 < 1.6",
-    "ember-handlebars-brunch": "git://github.com/ajetnewera/ember-handlebars-brunch.git"
+    "ember-handlebars-brunch": ">= 1.2.0"
   },
   "devDependencies": {
     "mocha": "0.14.0",
